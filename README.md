@@ -9,6 +9,10 @@
 **Flutter widgets that render a Thai PromptPay (EMVCo) QR code from a mobile
 number, National ID / Tax ID or e-Wallet, with an optional amount.**
 
+**▶ [Live demo](https://ultramcu.github.io/thai_promptpay_flutter.dart/)** —
+every widget plus an interactive "build your QR" playground and a decode demo,
+running in your browser.
+
 This is the Flutter rendering layer on top of the pure-Dart
 [`thai_promptpay`](https://pub.dev/packages/thai_promptpay) codec (kept pure-Dart
 so it still runs back-end / CLI). This package adds the widgets — it depends on

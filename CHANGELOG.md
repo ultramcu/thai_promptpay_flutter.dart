@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.4
+
+- Docs: add a **[live web demo](https://ultramcu.github.io/thai_promptpay_flutter.dart/)**
+  (the example gallery deployed to GitHub Pages) and a workflow to keep it
+  updated. The gallery now builds for web (thanks to the `thainum` ^0.5.3
+  dart2js fix). No library changes.
+
 ## 0.3.3
 
 - Docs: clarify the Thai tagline wording (สร้าง QR; เลขที่ผู้เสียภาษี). No code
