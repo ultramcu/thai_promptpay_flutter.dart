@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.2
+
+- **Gallery example.** The example is now a runnable gallery (mobile / desktop /
+  **web**) touring every widget — bare QR, QR card, live amount field, Bill
+  Payment QR + card — plus an interactive **playground** (pick a type, enter the
+  number/biller + amount → live QR + copyable payload) and a **decode demo**
+  (paste any payload → see who / how much via `decodeAny`). TH/EN toggle. No
+  library changes.
+
 ## 0.3.1
 
 - **Responsive cards (overflow fix).** `PromptPayQrCard` and
