@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1
+
+- **Responsive cards (overflow fix).** `PromptPayQrCard` and
+  `PromptPayBillQrCard` no longer throw a `RenderFlex overflowed` on small or
+  narrow surfaces: the embedded QR is clamped to the available width and the
+  content scrolls vertically when space is tight (via a shared internal
+  `ResponsiveCardBody`). In normal/roomy layouts the cards shrink-wrap and look
+  exactly as before. No public API change.
+
 ## 0.3.0
 
 - **`PromptPayBillQr`** — renders a PromptPay **Bill Payment** (EMVCo tag 30) QR

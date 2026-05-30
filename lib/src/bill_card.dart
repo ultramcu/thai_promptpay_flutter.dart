@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:thainum/thainum.dart';
 
 import 'bill_qr.dart';
+import 'responsive.dart';
 
 /// A drop-in card showing a PromptPay Bill Payment [PromptPayBillQr] together
 /// with a title, the biller / references, and (when [amountSatang] is set and
@@ -54,93 +55,89 @@ class PromptPayBillQrCard extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
-    final children = <Widget>[
-      Text(
-        title ?? 'ชำระบิล / Bill Payment',
-        style: textTheme.titleMedium,
-        textAlign: TextAlign.center,
-      ),
-      const SizedBox(height: 12),
-      PromptPayBillQr(
-        billerId: billerId,
-        ref1: ref1,
-        ref2: ref2,
-        amountSatang: amountSatang,
-        size: qrSize,
-      ),
-    ];
+    return ResponsiveCardBody(
+      qrSize: qrSize,
+      childrenBuilder: (effectiveQrSize) {
+        final children = <Widget>[
+          Text(
+            title ?? 'ชำระบิล / Bill Payment',
+            style: textTheme.titleMedium,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          PromptPayBillQr(
+            billerId: billerId,
+            ref1: ref1,
+            ref2: ref2,
+            amountSatang: amountSatang,
+            size: effectiveQrSize,
+          ),
+        ];
 
-    if (billerLabel != null) {
-      children
-        ..add(const SizedBox(height: 8))
-        ..add(
-          Text(
-            billerLabel!,
-            style: textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-        );
-    }
+        if (billerLabel != null) {
+          children
+            ..add(const SizedBox(height: 8))
+            ..add(
+              Text(
+                billerLabel!,
+                style: textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            );
+        }
 
-    if (showReferences) {
-      children
-        ..add(const SizedBox(height: 8))
-        ..add(
-          Text(
-            'Biller: $billerId',
-            style: textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-        )
-        ..add(
-          Text(
-            'Ref1: $ref1',
-            style: textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-        );
-      if (ref2 != null) {
-        children.add(
-          Text(
-            'Ref2: ${ref2!}',
-            style: textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-        );
-      }
-    }
+        if (showReferences) {
+          children
+            ..add(const SizedBox(height: 8))
+            ..add(
+              Text(
+                'Biller: $billerId',
+                style: textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            )
+            ..add(
+              Text(
+                'Ref1: $ref1',
+                style: textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            );
+          if (ref2 != null) {
+            children.add(
+              Text(
+                'Ref2: ${ref2!}',
+                style: textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
+        }
 
-    if (amountSatang != null && showAmountText) {
-      final satang = Satang(amountSatang!);
-      children
-        ..add(const SizedBox(height: 12))
-        ..add(
-          Text(
-            satang.toThb(),
-            style: textTheme.titleLarge,
-            textAlign: TextAlign.center,
-          ),
-        )
-        ..add(const SizedBox(height: 4))
-        ..add(
-          Text(
-            satang.toBahtText(),
-            style: textTheme.bodySmall
-                ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-            textAlign: TextAlign.center,
-          ),
-        );
-    }
+        if (amountSatang != null && showAmountText) {
+          final satang = Satang(amountSatang!);
+          children
+            ..add(const SizedBox(height: 12))
+            ..add(
+              Text(
+                satang.toThb(),
+                style: textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
+            )
+            ..add(const SizedBox(height: 4))
+            ..add(
+              Text(
+                satang.toBahtText(),
+                style: textTheme.bodySmall
+                    ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                textAlign: TextAlign.center,
+              ),
+            );
+        }
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: children,
-        ),
-      ),
+        return children;
+      },
     );
   }
 }

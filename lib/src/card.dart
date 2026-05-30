@@ -3,6 +3,7 @@ import 'package:thai_promptpay/thai_promptpay.dart';
 import 'package:thainum/thainum.dart';
 
 import 'qr.dart';
+import 'responsive.dart';
 
 /// A drop-in card showing a PromptPay [PromptPayQr] together with a title, the
 /// recipient, and (when [amountSatang] is set and [showAmountText] is true) the
@@ -43,63 +44,59 @@ class PromptPayQrCard extends StatelessWidget {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
-    final children = <Widget>[
-      Text(
-        title ?? 'พร้อมเพย์ / PromptPay',
-        style: textTheme.titleMedium,
-        textAlign: TextAlign.center,
-      ),
-      const SizedBox(height: 12),
-      PromptPayQr(
-        target: target,
-        amountSatang: amountSatang,
-        size: qrSize,
-      ),
-    ];
-
-    if (recipientLabel != null) {
-      children
-        ..add(const SizedBox(height: 8))
-        ..add(
+    return ResponsiveCardBody(
+      qrSize: qrSize,
+      childrenBuilder: (effectiveQrSize) {
+        final children = <Widget>[
           Text(
-            recipientLabel!,
-            style: textTheme.bodyMedium,
+            title ?? 'พร้อมเพย์ / PromptPay',
+            style: textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
-        );
-    }
-
-    if (amountSatang != null && showAmountText) {
-      final satang = Satang(amountSatang!);
-      children
-        ..add(const SizedBox(height: 12))
-        ..add(
-          Text(
-            satang.toThb(),
-            style: textTheme.titleLarge,
-            textAlign: TextAlign.center,
+          const SizedBox(height: 12),
+          PromptPayQr(
+            target: target,
+            amountSatang: amountSatang,
+            size: effectiveQrSize,
           ),
-        )
-        ..add(const SizedBox(height: 4))
-        ..add(
-          Text(
-            satang.toBahtText(),
-            style: textTheme.bodySmall
-                ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-            textAlign: TextAlign.center,
-          ),
-        );
-    }
+        ];
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: children,
-        ),
-      ),
+        if (recipientLabel != null) {
+          children
+            ..add(const SizedBox(height: 8))
+            ..add(
+              Text(
+                recipientLabel!,
+                style: textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+            );
+        }
+
+        if (amountSatang != null && showAmountText) {
+          final satang = Satang(amountSatang!);
+          children
+            ..add(const SizedBox(height: 12))
+            ..add(
+              Text(
+                satang.toThb(),
+                style: textTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
+            )
+            ..add(const SizedBox(height: 4))
+            ..add(
+              Text(
+                satang.toBahtText(),
+                style: textTheme.bodySmall
+                    ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                textAlign: TextAlign.center,
+              ),
+            );
+        }
+
+        return children;
+      },
     );
   }
 }
