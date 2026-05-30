@@ -3,8 +3,8 @@
 [![pub package](https://img.shields.io/pub/v/thai_promptpay_flutter.svg)](https://pub.dev/packages/thai_promptpay_flutter)
 [![CI](https://github.com/ultramcu/thai_promptpay_flutter.dart/actions/workflows/ci.yml/badge.svg)](https://github.com/ultramcu/thai_promptpay_flutter.dart/actions/workflows/ci.yml)
 
-**Flutter widgets ที่วาด QR พร้อมเพย์ (Thai PromptPay / EMVCo) จากเบอร์มือถือ /
-เลขบัตรประชาชน-ภาษี / e-Wallet พร้อมจำนวนเงิน**
+**Flutter widgets สำหรับสร้าง QR พร้อมเพย์ (Thai PromptPay / EMVCo) จากเบอร์มือถือ /
+เลขบัตรประชาชน-เลขที่ผู้เสียภาษี / e-Wallet พร้อมจำนวนเงิน**
 
 **Flutter widgets that render a Thai PromptPay (EMVCo) QR code from a mobile
 number, National ID / Tax ID or e-Wallet, with an optional amount.**

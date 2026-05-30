@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3
+
+- Docs: clarify the Thai tagline wording (สร้าง QR; เลขที่ผู้เสียภาษี). No code
+  changes.
+
 ## 0.3.2
 
 - **Gallery example.** The example is now a runnable gallery (mobile / desktop /
