@@ -8,5 +8,8 @@ library;
 
 export 'package:thai_promptpay/thai_promptpay.dart';
 
+export 'src/amount.dart'
+    show BahtAmountInputFormatter, satangFromBahtString, bahtStringFromSatang;
+export 'src/amount_field.dart';
 export 'src/card.dart';
 export 'src/qr.dart';

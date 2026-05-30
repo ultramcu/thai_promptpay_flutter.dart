@@ -32,11 +32,43 @@ class ExampleApp extends StatelessWidget {
                 const SizedBox(height: 24),
                 // The bare QR widget (static, no amount) via a convenience ctor.
                 PromptPayQr.mobile('0898765432', size: 180),
+                const SizedBox(height: 24),
+                // A live "enter an amount" QR.
+                const _LiveAmountDemo(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Type a baht amount and watch the QR update.
+class _LiveAmountDemo extends StatefulWidget {
+  const _LiveAmountDemo();
+
+  @override
+  State<_LiveAmountDemo> createState() => _LiveAmountDemoState();
+}
+
+class _LiveAmountDemoState extends State<_LiveAmountDemo> {
+  int? _satang;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          width: 200,
+          child: PromptPayAmountField(
+            onChanged: (s) => setState(() => _satang = s),
+          ),
+        ),
+        const SizedBox(height: 12),
+        PromptPayQr.mobile('0811112222', amountSatang: _satang, size: 180),
+      ],
     );
   }
 }

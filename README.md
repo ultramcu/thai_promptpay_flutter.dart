@@ -64,6 +64,25 @@ PromptPayQrCard(
 );
 ```
 
+## `PromptPayAmountField` — enter an amount (v0.2.0+)
+
+A text field for entering a baht amount that reports integer **satang** (exact,
+no `double`). Restricts input to digits + at most two decimals and shows a `฿`
+prefix. Wire it to a `PromptPayQr` for a live "enter an amount" screen:
+
+```dart
+int? satang;
+
+Column(children: [
+  PromptPayAmountField(onChanged: (s) => setState(() => satang = s)),
+  PromptPayQr.mobile('0812345678', amountSatang: satang),
+]);
+```
+
+The exact baht↔satang helpers behind it are exported for reuse:
+`satangFromBahtString('100.50')` → `10050`, `bahtStringFromSatang(10050)` →
+`'100.50'`, and `BahtAmountInputFormatter()` for your own `TextField`s.
+
 ## Notes
 
 - Output is verified through the codec — `thai_promptpay` is checked byte-for-byte
