@@ -11,5 +11,7 @@ export 'package:thai_promptpay/thai_promptpay.dart';
 export 'src/amount.dart'
     show BahtAmountInputFormatter, satangFromBahtString, bahtStringFromSatang;
 export 'src/amount_field.dart';
+export 'src/bill_card.dart';
+export 'src/bill_qr.dart';
 export 'src/card.dart';
 export 'src/qr.dart';

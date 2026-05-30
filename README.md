@@ -83,12 +83,42 @@ The exact baht↔satang helpers behind it are exported for reuse:
 `satangFromBahtString('100.50')` → `10050`, `bahtStringFromSatang(10050)` →
 `'100.50'`, and `BahtAmountInputFormatter()` for your own `TextField`s.
 
+## `PromptPayBillQr` / `PromptPayBillQrCard` — Bill Payment (v0.3.0+)
+
+Render a PromptPay **Bill Payment** (EMVCo tag 30) QR — the one on invoices /
+utilities / tax forms — from a Biller ID + Ref1 (optional Ref2 + amount):
+
+```dart
+// The bare QR widget:
+PromptPayBillQr(
+  billerId: '010553609264101',   // 13- or 15-digit Tax ID [+ suffix]
+  ref1: '000002201649894',
+  ref2: 'INV0001',               // optional
+  amountSatang: 25075,           // optional → 250.75 baht
+);
+
+// A drop-in card: QR + title + Biller/Ref rows + amount as Thai baht text:
+PromptPayBillQrCard(
+  billerId: '010553609264101',
+  ref1: '000002201649894',
+  ref2: 'INV0001',
+  amountSatang: 25075,
+  billerLabel: 'การไฟฟ้านครหลวง',
+);
+```
+
+Like `PromptPayQr`, invalid input shows an `errorBuilder` (or a default
+placeholder) instead of throwing, and a `payload` getter exposes the exact EMVCo
+string the widget renders. The bill-payment payload is verified byte-for-byte by
+the underlying [`thai_promptpay`](https://pub.dev/packages/thai_promptpay) codec.
+
 ## Notes
 
 - Output is verified through the codec — `thai_promptpay` is checked byte-for-byte
   against the canonical PromptPay references.
-- Scope: personal PromptPay (mobile / National ID / e-Wallet). Bill-Payment is not
-  included yet.
+- Scope: personal PromptPay (mobile / National ID / e-Wallet) **and** Bill Payment
+  (tag 30). The tag-62 additional-data block (Ref3) is tolerated on decode but not
+  generated.
 
 ## License
 

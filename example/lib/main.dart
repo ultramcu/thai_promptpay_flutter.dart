@@ -35,6 +35,16 @@ class ExampleApp extends StatelessWidget {
                 const SizedBox(height: 24),
                 // A live "enter an amount" QR.
                 const _LiveAmountDemo(),
+                const SizedBox(height: 24),
+                // A Bill Payment (tag 30) card: biller + Ref1/Ref2 + amount.
+                const PromptPayBillQrCard(
+                  billerId: '010553609264101',
+                  ref1: '000002201649894',
+                  ref2: 'INV0001',
+                  amountSatang: 25075, // 250.75 baht
+                  title: 'ชำระบิล / Bill Payment',
+                  billerLabel: 'การไฟฟ้านครหลวง',
+                ),
               ],
             ),
           ),

@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0
+
+- **`PromptPayBillQr`** — renders a PromptPay **Bill Payment** (EMVCo tag 30) QR
+  from a Biller ID + Ref1 (optional Ref2 + amount). Mirrors `PromptPayQr`:
+  invalid input shows an `errorBuilder` (or a default placeholder) instead of
+  throwing, and a `payload` getter exposes the exact EMVCo string it renders.
+- **`PromptPayBillQrCard`** — a drop-in Material card: the bill QR + a title,
+  the Biller ID / Ref1 / Ref2 rows, and the amount as Thai baht text (via
+  `thainum`).
+- Requires [`thai_promptpay`](https://pub.dev/packages/thai_promptpay) `^0.2.0`
+  (the bill-payment codec). The new codec API (`encodeBillPayment`,
+  `decodeBillPayment`, `decodeAny`, `BillPaymentPayload`) is re-exported.
+
 ## 0.2.0
 
 - **`PromptPayAmountField`** — a text field for entering a Thai baht amount,
