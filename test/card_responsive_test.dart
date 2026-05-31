@@ -17,17 +17,14 @@ void main() {
     );
   }
 
-  testWidgets('NARROW: width 150 — no overflow, QR clamps to <= 150',
-      (tester) async {
+  testWidgets('NARROW: width 150 — no overflow, QR clamps to <= 150', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: Center(
-            child: SizedBox(
-              width: 150,
-              height: 1000,
-              child: buildCard(),
-            ),
+            child: SizedBox(width: 150, height: 1000, child: buildCard()),
           ),
         ),
       ),
@@ -46,17 +43,14 @@ void main() {
     );
   });
 
-  testWidgets('SHORT: height 250 — no overflow, card scrolls, QR present',
-      (tester) async {
+  testWidgets('SHORT: height 250 — no overflow, card scrolls, QR present', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: Center(
-            child: SizedBox(
-              width: 400,
-              height: 250,
-              child: buildCard(),
-            ),
+            child: SizedBox(width: 400, height: 250, child: buildCard()),
           ),
         ),
       ),
@@ -74,14 +68,11 @@ void main() {
     expect(find.byType(QrImageView), findsOneWidget);
   });
 
-  testWidgets('WIDE: qrSize 300 on a roomy surface — clamp is a no-op',
-      (tester) async {
+  testWidgets('WIDE: qrSize 300 on a roomy surface — clamp is a no-op', (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: buildCard(qrSize: 300),
-        ),
-      ),
+      MaterialApp(home: Scaffold(body: buildCard(qrSize: 300))),
     );
     await tester.pumpAndSettle();
 

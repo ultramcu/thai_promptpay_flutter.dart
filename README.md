@@ -116,6 +116,82 @@ placeholder) instead of throwing, and a `payload` getter exposes the exact EMVCo
 string the widget renders. The bill-payment payload is verified byte-for-byte by
 the underlying [`thai_promptpay`](https://pub.dev/packages/thai_promptpay) codec.
 
+## Scanning / decoding (v0.4.0+)
+
+Decode a Thai QR — personal **PromptPay**, **Bill Payment**, or a **Slip Verify
+Mini-QR** — from the camera, a still image, or a raw payload string.
+
+**Pure decode** (no UI, never throws — `null` when unrecognized):
+
+```dart
+final ThaiQrResult? result = decodeThaiQr(payload);
+switch (result) {
+  case PromptPayResult(:final payload):     // personal PromptPay (tag 29)
+  case BillPaymentResult(:final payload):   // bill payment (tag 30)
+  case SlipResult(:final slip):             // slip verify mini-QR
+  case null:                                // not a recognized Thai QR
+}
+```
+
+**Camera scanner** — `PromptPayScanner` wraps
+[`mobile_scanner`](https://pub.dev/packages/mobile_scanner) and reports the first
+recognized Thai QR via `onResult`:
+
+```dart
+PromptPayScanner(
+  onResult: (result) {
+    switch (result) {
+      case PromptPayResult(:final payload): /* ... */
+      case BillPaymentResult(:final payload): /* ... */
+      case SlipResult(:final slip): /* ... */
+    }
+  },
+  onUnrecognized: (rawValue) { /* a QR, but not a Thai one */ },
+)
+```
+
+Pair a decoded `ThaiQrResult` with **`ThaiQrResultCard`** for a ready-made
+display widget:
+
+```dart
+ThaiQrResultCard(result);             // from a ThaiQrResult
+ThaiQrResultCard.fromPayload(payload); // decode + display in one step
+```
+
+**Still image** — decode a Thai QR from a photo/file path:
+
+```dart
+final ThaiQrResult? result = await decodeThaiQrFromImage('/path/to/photo.jpg');
+```
+
+### Camera permission / platform setup
+
+`PromptPayScanner` (and `decodeThaiQrFromImage`) need the camera setup that
+`mobile_scanner` requires. From the
+[mobile_scanner README](https://pub.dev/packages/mobile_scanner):
+
+- **iOS** — add a camera-usage description to `ios/Runner/Info.plist`:
+
+  ```xml
+  <key>NSCameraUsageDescription</key>
+  <string>This app needs camera access to scan QR codes.</string>
+  ```
+
+  `mobile_scanner` 7.x targets an iOS deployment target of **12.0** or higher.
+
+- **Android** — `mobile_scanner` 7.x requires a `minSdkVersion` of **23** or
+  higher (set in `android/app/build.gradle`). The `<uses-permission
+  android:name="android.permission.CAMERA" />` and `<uses-feature>` entries are
+  contributed by the plugin's manifest, so you do not normally add them
+  yourself.
+
+- **macOS** — enable the camera entitlement and add `NSCameraUsageDescription`
+  (see the mobile_scanner README for details).
+
+Image analysis (`decodeThaiQrFromImage`) is supported on Android, physical iOS
+devices, and macOS (not the iOS Simulator or web); the helper returns `null`
+rather than throwing where it is unsupported.
+
 ## Notes
 
 - Output is verified through the codec — `thai_promptpay` is checked byte-for-byte

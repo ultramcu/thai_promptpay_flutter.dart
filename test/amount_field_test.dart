@@ -8,11 +8,7 @@ import 'package:thai_promptpay_flutter/thai_promptpay_flutter.dart';
 /// Pumps [child] inside a minimal MaterialApp/Scaffold so a TextField can mount.
 Future<void> _pump(WidgetTester tester, Widget child) async {
   await tester.pumpWidget(
-    MaterialApp(
-      home: Scaffold(
-        body: Center(child: child),
-      ),
-    ),
+    MaterialApp(home: Scaffold(body: Center(child: child))),
   );
 }
 
@@ -23,15 +19,11 @@ String _fieldText(WidgetTester tester) {
 
 void main() {
   group('PromptPayAmountField', () {
-    testWidgets('onChanged reports integer satang (null when empty)',
-        (tester) async {
+    testWidgets('onChanged reports integer satang (null when empty)', (
+      tester,
+    ) async {
       int? captured = -1; // sentinel distinct from null
-      await _pump(
-        tester,
-        PromptPayAmountField(
-          onChanged: (s) => captured = s,
-        ),
-      );
+      await _pump(tester, PromptPayAmountField(onChanged: (s) => captured = s));
 
       await tester.enterText(find.byType(TextField), '100.50');
       await tester.pump();
@@ -50,40 +42,39 @@ void main() {
       expect(captured, isNull, reason: 'empty field reports null');
     });
 
-    testWidgets('initialSatang prefills the field (round-trips)',
-        (tester) async {
-      await _pump(
-        tester,
-        const PromptPayAmountField(initialSatang: 12345),
-      );
+    testWidgets('initialSatang prefills the field (round-trips)', (
+      tester,
+    ) async {
+      await _pump(tester, const PromptPayAmountField(initialSatang: 12345));
 
       final text = _fieldText(tester);
       // The prefilled text must decode back to the original satang amount.
-      expect(satangFromBahtString(text), 12345,
-          reason: 'initialSatang 12345 should round-trip; got "$text"');
+      expect(
+        satangFromBahtString(text),
+        12345,
+        reason: 'initialSatang 12345 should round-trip; got "$text"',
+      );
     });
 
     testWidgets('default decoration shows the ฿ prefix', (tester) async {
-      await _pump(
-        tester,
-        PromptPayAmountField(onChanged: (_) {}),
-      );
+      await _pump(tester, PromptPayAmountField(onChanged: (_) {}));
 
       final field = tester.widget<TextField>(find.byType(TextField));
       final prefix = field.decoration?.prefixText;
       // Accept either a rendered ฿ text widget or a prefixText of '฿'.
       final hasPrefixText = prefix != null && prefix.contains('฿');
       final hasPrefixWidget = find.text('฿').evaluate().isNotEmpty;
-      expect(hasPrefixText || hasPrefixWidget, isTrue,
-          reason: 'expected a ฿ prefix; prefixText was "$prefix"');
+      expect(
+        hasPrefixText || hasPrefixWidget,
+        isTrue,
+        reason: 'expected a ฿ prefix; prefixText was "$prefix"',
+      );
     });
 
-    testWidgets('formatter restricts input to digits + at most 2 decimals',
-        (tester) async {
-      await _pump(
-        tester,
-        PromptPayAmountField(onChanged: (_) {}),
-      );
+    testWidgets('formatter restricts input to digits + at most 2 decimals', (
+      tester,
+    ) async {
+      await _pump(tester, PromptPayAmountField(onChanged: (_) {}));
 
       final ok = RegExp(r'^\d*(\.\d{0,2})?$');
 
@@ -91,17 +82,25 @@ void main() {
       await tester.enterText(find.byType(TextField), '1.234');
       await tester.pump();
       final after3dp = _fieldText(tester);
-      expect(ok.hasMatch(after3dp), isTrue,
-          reason:
-              '3-decimal input should be clamped to <=2dp; got "$after3dp"');
+      expect(
+        ok.hasMatch(after3dp),
+        isTrue,
+        reason: '3-decimal input should be clamped to <=2dp; got "$after3dp"',
+      );
       // The result must never be a 3-decimal string. (Atomic enterText may
       // either clamp to "1.23" or reject the whole edit and keep ""; both are
       // spec-valid as long as no >2dp value survives.)
-      expect(after3dp.contains('.234'), isFalse,
-          reason: 'the 3rd decimal must not survive; got "$after3dp"');
+      expect(
+        after3dp.contains('.234'),
+        isFalse,
+        reason: 'the 3rd decimal must not survive; got "$after3dp"',
+      );
       if (after3dp.isNotEmpty) {
-        expect(satangFromBahtString(after3dp), isNotNull,
-            reason: '"$after3dp" must be a valid <=2dp baht string');
+        expect(
+          satangFromBahtString(after3dp),
+          isNotNull,
+          reason: '"$after3dp" must be a valid <=2dp baht string',
+        );
       }
 
       // Incremental: once "1.23" is in place, the formatter must not let a
@@ -113,62 +112,81 @@ void main() {
       await tester.enterText(find.byType(TextField), '1.234');
       await tester.pump();
       final appended = _fieldText(tester);
-      expect(appended.contains('.234'), isFalse,
-          reason: 'appending a 3rd decimal must be rejected; got "$appended"');
+      expect(
+        appended.contains('.234'),
+        isFalse,
+        reason: 'appending a 3rd decimal must be rejected; got "$appended"',
+      );
 
       // A second dot must not survive.
       await tester.enterText(find.byType(TextField), '1.2.3');
       await tester.pump();
       final afterTwoDots = _fieldText(tester);
-      expect('.'.allMatches(afterTwoDots).length <= 1, isTrue,
-          reason: 'at most one decimal point allowed; got "$afterTwoDots"');
-      expect(ok.hasMatch(afterTwoDots), isTrue,
-          reason: 'two-dot input should be sanitized; got "$afterTwoDots"');
+      expect(
+        '.'.allMatches(afterTwoDots).length <= 1,
+        isTrue,
+        reason: 'at most one decimal point allowed; got "$afterTwoDots"',
+      );
+      expect(
+        ok.hasMatch(afterTwoDots),
+        isTrue,
+        reason: 'two-dot input should be sanitized; got "$afterTwoDots"',
+      );
     });
 
-    testWidgets('owned controller is disposed cleanly (no leak/exception)',
-        (tester) async {
-      await _pump(
-        tester,
-        PromptPayAmountField(onChanged: (_) {}),
-      );
+    testWidgets('owned controller is disposed cleanly (no leak/exception)', (
+      tester,
+    ) async {
+      await _pump(tester, PromptPayAmountField(onChanged: (_) {}));
       await tester.enterText(find.byType(TextField), '12.34');
       await tester.pump();
 
       // Replace the field with a different widget to force dispose().
       await _pump(tester, const SizedBox.shrink());
-      expect(tester.takeException(), isNull,
-          reason: 'disposing the field must not throw');
+      expect(
+        tester.takeException(),
+        isNull,
+        reason: 'disposing the field must not throw',
+      );
     });
 
-    testWidgets('external controller is NOT disposed by the field',
-        (tester) async {
+    testWidgets('external controller is NOT disposed by the field', (
+      tester,
+    ) async {
       final external = TextEditingController();
       addTearDown(external.dispose); // we still own it
 
       await _pump(
         tester,
-        PromptPayAmountField(
-          controller: external,
-          onChanged: (_) {},
-        ),
+        PromptPayAmountField(controller: external, onChanged: (_) {}),
       );
       await tester.enterText(find.byType(TextField), '5.00');
       await tester.pump();
-      expect(external.text.isNotEmpty, isTrue,
-          reason: 'external controller should receive typed text');
+      expect(
+        external.text.isNotEmpty,
+        isTrue,
+        reason: 'external controller should receive typed text',
+      );
 
       // Dispose the field by swapping the tree.
       await _pump(tester, const SizedBox.shrink());
-      expect(tester.takeException(), isNull,
-          reason: 'field dispose must not throw with an external controller');
+      expect(
+        tester.takeException(),
+        isNull,
+        reason: 'field dispose must not throw with an external controller',
+      );
 
       // If the field had disposed our controller, touching it now would throw.
-      expect(() => external.text, returnsNormally,
-          reason:
-              'external controller must still be usable after field dispose');
-      expect(() => external.text = '9.99', returnsNormally,
-          reason: 'external controller must not be disposed by the field');
+      expect(
+        () => external.text,
+        returnsNormally,
+        reason: 'external controller must still be usable after field dispose',
+      );
+      expect(
+        () => external.text = '9.99',
+        returnsNormally,
+        reason: 'external controller must not be disposed by the field',
+      );
     });
   });
 }

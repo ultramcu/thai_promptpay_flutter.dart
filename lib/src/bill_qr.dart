@@ -73,8 +73,9 @@ class PromptPayBillQr extends StatelessWidget {
       // Invalid biller ID / reference (PromptPayException implements
       // FormatException). Re-run to surface the specific error to the builder;
       // any non-format error propagates from there.
-      Object error =
-          const FormatException('thai_promptpay: invalid bill payment');
+      Object error = const FormatException(
+        'thai_promptpay: invalid bill payment',
+      );
       try {
         encodeBillPayment(
           billerId: billerId,

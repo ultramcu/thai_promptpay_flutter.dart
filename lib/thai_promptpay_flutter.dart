@@ -14,4 +14,7 @@ export 'src/amount_field.dart';
 export 'src/bill_card.dart';
 export 'src/bill_qr.dart';
 export 'src/card.dart';
+export 'src/decode_result.dart';
 export 'src/qr.dart';
+export 'src/result_card.dart';
+export 'src/scanner.dart';

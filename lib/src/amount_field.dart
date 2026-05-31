@@ -62,9 +62,10 @@ class _PromptPayAmountFieldState extends State<PromptPayAmountField> {
     if (widget.controller == null) {
       // We own this controller, so we may safely seed and later dispose it.
       _ownController = TextEditingController(
-        text: widget.initialSatang == null
-            ? ''
-            : bahtStringFromSatang(widget.initialSatang!),
+        text:
+            widget.initialSatang == null
+                ? ''
+                : bahtStringFromSatang(widget.initialSatang!),
       );
     } else if (widget.initialSatang != null &&
         widget.controller!.text.isEmpty) {
@@ -90,15 +91,14 @@ class _PromptPayAmountFieldState extends State<PromptPayAmountField> {
       autofocus: widget.autofocus,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       inputFormatters: const [BahtAmountInputFormatter()],
-      decoration: widget.decoration ??
-          const InputDecoration(
-            labelText: 'จำนวนเงิน (บาท)',
-            prefixText: '฿',
-          ),
+      decoration:
+          widget.decoration ??
+          const InputDecoration(labelText: 'จำนวนเงิน (บาท)', prefixText: '฿'),
       onChanged: (text) => widget.onChanged?.call(satangFromBahtString(text)),
-      validator: widget.validator == null
-          ? null
-          : (text) => widget.validator!(satangFromBahtString(text ?? '')),
+      validator:
+          widget.validator == null
+              ? null
+              : (text) => widget.validator!(satangFromBahtString(text ?? '')),
     );
   }
 }

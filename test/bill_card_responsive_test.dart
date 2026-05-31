@@ -39,16 +39,15 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets(
-    '1. NARROW width:150 -> no overflow, QR clamped to <= 150',
-    (tester) async {
-      await pumpConstrained(tester, width: 150, height: 1000);
+  testWidgets('1. NARROW width:150 -> no overflow, QR clamped to <= 150', (
+    tester,
+  ) async {
+    await pumpConstrained(tester, width: 150, height: 1000);
 
-      expect(tester.takeException(), isNull);
-      final qr = tester.widget<QrImageView>(find.byType(QrImageView));
-      expect(qr.size, lessThanOrEqualTo(150.0));
-    },
-  );
+    expect(tester.takeException(), isNull);
+    final qr = tester.widget<QrImageView>(find.byType(QrImageView));
+    expect(qr.size, lessThanOrEqualTo(150.0));
+  });
 
   testWidgets(
     '2. SHORT height:250 -> no overflow, scrollable, QR still present',
@@ -61,21 +60,16 @@ void main() {
     },
   );
 
-  testWidgets(
-    '3. WIDE qrSize:300 -> clamp is a no-op, QR size == 300',
-    (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Center(child: buildCard(qrSize: 300)),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
+  testWidgets('3. WIDE qrSize:300 -> clamp is a no-op, QR size == 300', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(home: Scaffold(body: Center(child: buildCard(qrSize: 300)))),
+    );
+    await tester.pumpAndSettle();
 
-      expect(tester.takeException(), isNull);
-      final qr = tester.widget<QrImageView>(find.byType(QrImageView));
-      expect(qr.size, 300.0);
-    },
-  );
+    expect(tester.takeException(), isNull);
+    final qr = tester.widget<QrImageView>(find.byType(QrImageView));
+    expect(qr.size, 300.0);
+  });
 }

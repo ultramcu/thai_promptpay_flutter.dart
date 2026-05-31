@@ -31,14 +31,14 @@ class PromptPayQr extends StatelessWidget {
     Color? backgroundColor,
     Widget Function(BuildContext context, Object error)? errorBuilder,
   }) : this(
-          key: key,
-          target: PromptPayTarget(PromptPayType.mobile, phone),
-          amountSatang: amountSatang,
-          size: size,
-          padding: padding,
-          backgroundColor: backgroundColor,
-          errorBuilder: errorBuilder,
-        );
+         key: key,
+         target: PromptPayTarget(PromptPayType.mobile, phone),
+         amountSatang: amountSatang,
+         size: size,
+         padding: padding,
+         backgroundColor: backgroundColor,
+         errorBuilder: errorBuilder,
+       );
 
   /// Creates a PromptPay QR paying a 13-digit National ID / personal Tax ID.
   PromptPayQr.nationalId(
@@ -50,14 +50,14 @@ class PromptPayQr extends StatelessWidget {
     Color? backgroundColor,
     Widget Function(BuildContext context, Object error)? errorBuilder,
   }) : this(
-          key: key,
-          target: PromptPayTarget(PromptPayType.nationalId, id),
-          amountSatang: amountSatang,
-          size: size,
-          padding: padding,
-          backgroundColor: backgroundColor,
-          errorBuilder: errorBuilder,
-        );
+         key: key,
+         target: PromptPayTarget(PromptPayType.nationalId, id),
+         amountSatang: amountSatang,
+         size: size,
+         padding: padding,
+         backgroundColor: backgroundColor,
+         errorBuilder: errorBuilder,
+       );
 
   /// Creates a PromptPay QR paying a 15-digit e-Wallet ID.
   PromptPayQr.eWallet(
@@ -69,14 +69,14 @@ class PromptPayQr extends StatelessWidget {
     Color? backgroundColor,
     Widget Function(BuildContext context, Object error)? errorBuilder,
   }) : this(
-          key: key,
-          target: PromptPayTarget(PromptPayType.eWallet, id),
-          amountSatang: amountSatang,
-          size: size,
-          padding: padding,
-          backgroundColor: backgroundColor,
-          errorBuilder: errorBuilder,
-        );
+         key: key,
+         target: PromptPayTarget(PromptPayType.eWallet, id),
+         amountSatang: amountSatang,
+         size: size,
+         padding: padding,
+         backgroundColor: backgroundColor,
+         errorBuilder: errorBuilder,
+       );
 
   /// The recipient (mobile / National ID / e-Wallet).
   final PromptPayTarget target;

@@ -129,8 +129,9 @@ class PromptPayBillQrCard extends StatelessWidget {
             ..add(
               Text(
                 satang.toBahtText(),
-                style: textTheme.bodySmall
-                    ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                style: textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
                 textAlign: TextAlign.center,
               ),
             );

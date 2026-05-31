@@ -26,36 +26,38 @@ void main() {
     );
 
     testWidgets(
-        'renders a QrImageView with the default size for a valid target',
-        (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: PromptPayQr.mobile('0812345678', amountSatang: 10000),
+      'renders a QrImageView with the default size for a valid target',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: PromptPayQr.mobile('0812345678', amountSatang: 10000),
+            ),
           ),
-        ),
-      );
+        );
 
-      final qrFinder = find.byType(QrImageView);
-      expect(qrFinder, findsOneWidget,
-          reason: 'a valid target must render a QrImageView');
+        final qrFinder = find.byType(QrImageView);
+        expect(
+          qrFinder,
+          findsOneWidget,
+          reason: 'a valid target must render a QrImageView',
+        );
 
-      final qr = tester.widget<QrImageView>(qrFinder);
-      // Default size per the public API is 220.
-      expect(qr.size, equals(220.0));
+        final qr = tester.widget<QrImageView>(qrFinder);
+        // Default size per the public API is 220.
+        expect(qr.size, equals(220.0));
 
-      // The exact payload the widget should be drawing must itself be a valid,
-      // renderable QR string (independent check via qr_flutter's validator).
-      final validation = QrValidator.validate(data: mobilePayload);
-      expect(validation.status, QrValidationStatus.valid);
-    });
+        // The exact payload the widget should be drawing must itself be a valid,
+        // renderable QR string (independent check via qr_flutter's validator).
+        final validation = QrValidator.validate(data: mobilePayload);
+        expect(validation.status, QrValidationStatus.valid);
+      },
+    );
 
     testWidgets('honours an explicit size', (tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
-            body: PromptPayQr.mobile('0812345678', size: 320),
-          ),
+          home: Scaffold(body: PromptPayQr.mobile('0812345678', size: 320)),
         ),
       );
 
@@ -72,35 +74,36 @@ void main() {
       expect(decoded.amountSatang, 10000);
     });
 
-    testWidgets('National ID constructor renders a QR for a nationalId payload',
-        (tester) async {
-      const id = '1101700230708'; // valid 13-digit Thai National ID
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: PromptPayQr.nationalId(id)),
-        ),
-      );
+    testWidgets(
+      'National ID constructor renders a QR for a nationalId payload',
+      (tester) async {
+        const id = '1101700230708'; // valid 13-digit Thai National ID
+        await tester.pumpWidget(
+          MaterialApp(home: Scaffold(body: PromptPayQr.nationalId(id))),
+        );
 
-      expect(find.byType(QrImageView), findsOneWidget);
+        expect(find.byType(QrImageView), findsOneWidget);
 
-      final expected = encodePromptPay(
-        target: const PromptPayTarget(PromptPayType.nationalId, id),
-      );
-      expect(QrValidator.validate(data: expected).status,
-          QrValidationStatus.valid);
+        final expected = encodePromptPay(
+          target: const PromptPayTarget(PromptPayType.nationalId, id),
+        );
+        expect(
+          QrValidator.validate(data: expected).status,
+          QrValidationStatus.valid,
+        );
 
-      final decoded = decodePromptPay(expected);
-      expect(decoded.target.type, PromptPayType.nationalId);
-      expect(decoded.target.value, id);
-    });
+        final decoded = decodePromptPay(expected);
+        expect(decoded.target.type, PromptPayType.nationalId);
+        expect(decoded.target.value, id);
+      },
+    );
 
-    testWidgets('e-Wallet constructor renders a QR for an eWallet payload',
-        (tester) async {
+    testWidgets('e-Wallet constructor renders a QR for an eWallet payload', (
+      tester,
+    ) async {
       const wallet = '004999000000001'; // valid 15-digit e-Wallet ID
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: PromptPayQr.eWallet(wallet)),
-        ),
+        MaterialApp(home: Scaffold(body: PromptPayQr.eWallet(wallet))),
       );
 
       expect(find.byType(QrImageView), findsOneWidget);
@@ -108,16 +111,19 @@ void main() {
       final expected = encodePromptPay(
         target: const PromptPayTarget(PromptPayType.eWallet, wallet),
       );
-      expect(QrValidator.validate(data: expected).status,
-          QrValidationStatus.valid);
+      expect(
+        QrValidator.validate(data: expected).status,
+        QrValidationStatus.valid,
+      );
 
       final decoded = decodePromptPay(expected);
       expect(decoded.target.type, PromptPayType.eWallet);
       expect(decoded.target.value, wallet);
     });
 
-    testWidgets('invalid target does not throw and shows a fallback (no QR)',
-        (tester) async {
+    testWidgets('invalid target does not throw and shows a fallback (no QR)', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -127,8 +133,11 @@ void main() {
       );
 
       // The widget must swallow the codec error during build.
-      expect(tester.takeException(), isNull,
-          reason: 'invalid input must not throw out of build');
+      expect(
+        tester.takeException(),
+        isNull,
+        reason: 'invalid input must not throw out of build',
+      );
 
       // No QR should be drawn for an invalid target.
       expect(find.byType(QrImageView), findsNothing);
@@ -140,8 +149,8 @@ void main() {
           home: Scaffold(
             body: PromptPayQr.mobile(
               '123', // invalid
-              errorBuilder: (context, error) =>
-                  const Text('ERR', key: Key('err')),
+              errorBuilder:
+                  (context, error) => const Text('ERR', key: Key('err')),
             ),
           ),
         ),

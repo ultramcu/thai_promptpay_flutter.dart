@@ -41,23 +41,27 @@ void main() {
   }
 
   testWidgets(
-      '1. valid input renders one Card with one PromptPayBillQr and one '
-      'QrImageView, no exception', (tester) async {
-    await pumpCard(tester);
+    '1. valid input renders one Card with one PromptPayBillQr and one '
+    'QrImageView, no exception',
+    (tester) async {
+      await pumpCard(tester);
 
-    expect(tester.takeException(), isNull);
-    expect(find.byType(PromptPayBillQrCard), findsOneWidget);
-    expect(find.byType(PromptPayBillQr), findsOneWidget);
-    expect(find.byType(QrImageView), findsOneWidget);
-  });
+      expect(tester.takeException(), isNull);
+      expect(find.byType(PromptPayBillQrCard), findsOneWidget);
+      expect(find.byType(PromptPayBillQr), findsOneWidget);
+      expect(find.byType(QrImageView), findsOneWidget);
+    },
+  );
 
-  testWidgets('2a. showReferences=true (default) shows biller id and ref1 text',
-      (tester) async {
-    await pumpCard(tester);
+  testWidgets(
+    '2a. showReferences=true (default) shows biller id and ref1 text',
+    (tester) async {
+      await pumpCard(tester);
 
-    expect(find.textContaining(billerId), findsWidgets);
-    expect(find.textContaining(ref1), findsWidgets);
-  });
+      expect(find.textContaining(billerId), findsWidgets);
+      expect(find.textContaining(ref1), findsWidgets);
+    },
+  );
 
   testWidgets('2b. ref2, when provided, is shown', (tester) async {
     await pumpCard(tester, ref2: ref2);
@@ -65,24 +69,27 @@ void main() {
     expect(find.textContaining(ref2), findsWidgets);
   });
 
-  testWidgets('2c. showReferences=false hides the Ref1: label row',
-      (tester) async {
+  testWidgets('2c. showReferences=false hides the Ref1: label row', (
+    tester,
+  ) async {
     await pumpCard(tester, showReferences: false);
 
     expect(find.textContaining('Ref1:'), findsNothing);
   });
 
   testWidgets(
-      '3a. amountSatang set + showAmountText shows the baht amount (250.75)',
-      (tester) async {
-    await pumpCard(tester, amountSatang: 25075, showAmountText: true);
+    '3a. amountSatang set + showAmountText shows the baht amount (250.75)',
+    (tester) async {
+      await pumpCard(tester, amountSatang: 25075, showAmountText: true);
 
-    // Satang(25075).toThb() -> '฿250.75'; assert the numeric substring.
-    expect(find.textContaining('250.75'), findsWidgets);
-  });
+      // Satang(25075).toThb() -> '฿250.75'; assert the numeric substring.
+      expect(find.textContaining('250.75'), findsWidgets);
+    },
+  );
 
-  testWidgets('3b. showAmountText=false hides the baht amount text',
-      (tester) async {
+  testWidgets('3b. showAmountText=false hides the baht amount text', (
+    tester,
+  ) async {
     await pumpCard(tester, amountSatang: 25075, showAmountText: false);
 
     expect(find.textContaining('250.75'), findsNothing);
@@ -94,8 +101,9 @@ void main() {
     expect(find.text('การไฟฟ้านครหลวง'), findsOneWidget);
   });
 
-  testWidgets('5. qrSize is forwarded to the inner QrImageView',
-      (tester) async {
+  testWidgets('5. qrSize is forwarded to the inner QrImageView', (
+    tester,
+  ) async {
     await pumpCard(tester, qrSize: 300);
 
     final qr = tester.widget<QrImageView>(find.byType(QrImageView));

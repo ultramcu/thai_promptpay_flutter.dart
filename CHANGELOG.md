@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0
+
+- Add a **decode** side to the package (closes #1):
+  - `decodeThaiQr(String)` → sealed `ThaiQrResult` (`PromptPayResult` |
+    `BillPaymentResult` | `SlipResult`) — one call that recognizes a personal
+    PromptPay, a Bill Payment, or a Slip Verify Mini-QR. Never throws; returns
+    `null` if unrecognized.
+  - `ThaiQrResultCard` (+ `ThaiQrResultCard.fromPayload`) — a Material widget
+    that renders a decoded result (recipient/biller/bank, baht text, refs).
+  - `PromptPayScanner` — a camera scanner widget (via `mobile_scanner`) that
+    reports a `ThaiQrResult` through `onResult`; plus `decodeThaiQrFromImage`.
+- Bump `thai_promptpay` to ^0.3.0 (adds Slip Verify decoding).
+- **Requires Flutter >= 3.29 / Dart >= 3.7** now (a floor raised by
+  `mobile_scanner` 7.x). Camera use needs platform setup — see the README.
+
 ## 0.3.4
 
 - Docs: add a **[live web demo](https://ultramcu.github.io/thai_promptpay_flutter.dart/)**

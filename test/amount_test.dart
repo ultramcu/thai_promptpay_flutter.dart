@@ -82,8 +82,11 @@ void main() {
 
     void accept(String oldText, String newText) {
       final result = formatter.formatEditUpdate(v(oldText), v(newText));
-      expect(result.text, newText,
-          reason: 'old="$oldText" new="$newText" should be accepted');
+      expect(
+        result.text,
+        newText,
+        reason: 'old="$oldText" new="$newText" should be accepted',
+      );
     }
 
     test("accept ''", () => accept('1', ''));
@@ -100,8 +103,11 @@ void main() {
 
     void reject(String oldText, String newText) {
       final result = formatter.formatEditUpdate(v(oldText), v(newText));
-      expect(result.text, oldText,
-          reason: 'old="$oldText" new="$newText" should be rejected');
+      expect(
+        result.text,
+        oldText,
+        reason: 'old="$oldText" new="$newText" should be rejected',
+      );
     }
 
     test('reject 2nd dot', () => reject('100.5', '100.5.'));

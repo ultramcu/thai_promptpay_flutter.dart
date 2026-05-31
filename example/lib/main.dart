@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'playground_section.dart';
+import 'scanner_section.dart';
 import 'showcase_sections.dart';
 
 void main() => runApp(const ExampleApp());
@@ -109,6 +110,14 @@ class GalleryHome extends StatelessWidget {
               'Paste a PromptPay payload → see who / how much (decodeAny)'),
         ),
         DecodeSection(isThai: isThai),
+      ),
+      (
+        _DemoMeta(
+          _t('สแกน QR ด้วยกล้อง', 'Scan a QR with the camera'),
+          _t('PromptPayScanner → ถอดรหัสแล้วโชว์ด้วย ThaiQrResultCard',
+              'PromptPayScanner → decode and display with ThaiQrResultCard'),
+        ),
+        ScannerSection(isThai: isThai),
       ),
     ];
 
